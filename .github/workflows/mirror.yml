@@ -37,6 +37,6 @@ jobs:
 
       - name: Push copy vers le repo privé
         run: |
-          git remote add prive git@github.com:${{ vars.MIRROR_REPO }}.git
-          git push prive production:production --force
+          git remote add git@github.com:${{ vars.MIRROR_REPO }}.git
+          git push production:production --force
 
