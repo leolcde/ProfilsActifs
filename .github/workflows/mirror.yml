@@ -1,0 +1,39 @@
+name: Production build check + mirror
+
+on:
+  push:
+    branches: [production]
+
+jobs:
+  build-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+      - run: go build ./...
+        working-directory: backend
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci && npm run build
+        working-directory: frontend
+
+  mirror:
+    needs: build-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push vers le repo privé
+        env:
+          MIRROR_TOKEN: ${{ secrets.PROD_MIRROR_TOKEN }}
+          # défini en variable de repo : Settings > Secrets and variables > Actions > Variables
+          MIRROR_REPO: ${{ vars.MIRROR_REPO }} # ex: mon-org/profilsactifs-prod
+        run: |
+          git push --force \
+            "https://x-access-token:${MIRROR_TOKEN}@github.com/${MIRROR_REPO}.git" \
+            production:production
