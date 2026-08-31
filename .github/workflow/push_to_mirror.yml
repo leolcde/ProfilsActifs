@@ -1,0 +1,27 @@
+name: Mirror main to private repo
+
+on:
+  push:
+    branches: [production]
+
+jobs:
+  build-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          echo "build ici pour vérifier que production est sain"
+
+  mirror:
+    needs: build-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push copy vers le repo privé
+        run: |
+          git remote add prive https://x-access-token:${{ secrets.PROD_MIRROR_TOKEN }}@github.com/ton-user/repo-prive.git
+          git push prive production:production --force
