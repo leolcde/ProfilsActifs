@@ -31,8 +31,8 @@ jobs:
       - name: Push vers le repo privé
         env:
           MIRROR_TOKEN: ${{ secrets.PROD_MIRROR_TOKEN }}
-          # défini en variable de repo : Settings > Secrets and variables > Actions > Variables
-          MIRROR_REPO: ${{ vars.MIRROR_REPO }} # ex: mon-org/profilsactifs-prod
+
+          MIRROR_REPO: ${{ vars.MIRROR_REPO }}
         run: |
           git push --force \
             "https://x-access-token:${MIRROR_TOKEN}@github.com/${MIRROR_REPO}.git" \
