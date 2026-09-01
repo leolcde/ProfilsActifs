@@ -1,19 +1,44 @@
 services:
-  backend:
-    build: ./backend
+  postgres:
+    image: postgres:16-alpine
     ports:
-      - "8080:8080"
+      - "${POSTGRES_PORT:-5432}:5432"
     environment:
-      - PORT=8080
+      - POSTGRES_USER=${POSTGRES_USER:-jibjob}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-jibjob}
+      - POSTGRES_DB=${POSTGRES_DB:-jibjob}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/migrations/001_init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+      - ./db/seeds/001_profils.sql:/docker-entrypoint-initdb.d/02_profils.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   frontend:
     build: ./frontend
     ports:
       - "5173:5173"
     environment:
-      - VITE_API_URL=http://backend:8080
+      - VITE_API_URL=${VITE_API_URL:-http://backend:8080}
     volumes:
       - ./frontend:/app
       - /app/node_modules
     depends_on:
       - backend
+
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=${PORT:-8080}
+      - DATABASE_URL=postgres://${POSTGRES_USER:-jibjob}:${POSTGRES_PASSWORD:-jibjob}@${POSTGRES_HOST:-postgres}:5432/${POSTGRES_DB:-jibjob}?sslmode=disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:

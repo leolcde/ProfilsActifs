@@ -100,6 +100,7 @@ Every push to `dev` and every pull request runs [`build.yml`](.github/workflows/
 - `go build` + `go vet` on the backend
 - `npm ci` + `npm run build` on the frontend
 - `docker compose build` on the full stack
+- `db`: starts Postgres, waits for the healthcheck, asserts the schema and seed loaded
 
 ---
 
