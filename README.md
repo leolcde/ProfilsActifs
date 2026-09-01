@@ -2,7 +2,7 @@
 
 <div align="center">
 
-# <code> ProfilsActifs </code>
+# <code> JibJob </code>
 
 Web platform built with Go and Vue, containerized with Docker Compose.
 
@@ -29,7 +29,7 @@ Web platform built with Go and Vue, containerized with Docker Compose.
 
 ## Overview
 
-ProfilsActifs is a full-stack web application. The backend is a Go HTTP service exposing
+JibJob is a full-stack web application. The backend is a Go HTTP service exposing
 a JSON API, and the frontend is a Vue 3 single-page app built with Vite. Both run as
 containers orchestrated by Docker Compose, with the frontend proxying `/api` to the backend.
 
@@ -38,7 +38,7 @@ containers orchestrated by Docker Compose, with the frontend proxying `/api` to 
 ## Project Structure
 
 ```sh
-└── ProfilsActifs/
+└── JibJob/
    ├── backend/
    │   ├── main.go            # HTTP server, API routes
    │   ├── go.mod
@@ -65,8 +65,8 @@ containers orchestrated by Docker Compose, with the frontend proxying `/api` to 
 ### Run the stack
 
 ```sh
-git clone git@github.com:leolcde/ProfilsActifs.git
-cd ProfilsActifs
+git clone git@github.com:leolcde/JibJob.git
+cd JibJob
 docker compose up --build
 ```
 
