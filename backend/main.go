@@ -1,29 +1,28 @@
 package main
 
 import (
-	"encoding/json"
-	"log"
+	"fmt"
 	"net/http"
-	"os"
 )
 
+func handler(res http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(res, "Hello, world!")
+}
+
+func health(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-Type", "application/json")
+	res.WriteHeader(http.StatusOK)
+	fmt.Fprintf(res, `{"status":"ok"}`)
+}
+
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
+	http.HandleFunc("/", handler)
+	http.HandleFunc("/health", health)
 
-	mux := http.NewServeMux()
-	mux.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
-	})
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello, World!"))
-	})
+	fmt.Println("serv up in http://localhost:8080")
 
-	log.Printf("backend listening on :%s", port)
-	if err := http.ListenAndServe(":"+port, mux); err != nil {
-		log.Fatal(err)
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		fmt.Println("Erreur:", err)
 	}
 }
