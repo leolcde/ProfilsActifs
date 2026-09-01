@@ -9,7 +9,8 @@ ROOT="$(cd "$DIR/.." && pwd)"
 if [ -n "$DATABASE_URL" ]; then
     DB_URL="$DATABASE_URL"
 else
-    DB_URL="postgres://${POSTGRES_USER:-jibjob}:${POSTGRES_PASSWORD:-jibjob}@localhost:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-jibjob}?sslmode=disable"
+    : "${POSTGRES_USER:?manque .env}" "${POSTGRES_PASSWORD:?manque .env}" "${POSTGRES_DB:?manque .env}"
+    DB_URL="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:${POSTGRES_PORT:-5432}/${POSTGRES_DB}?sslmode=disable"
 fi
 
 echo "==> Migrations"

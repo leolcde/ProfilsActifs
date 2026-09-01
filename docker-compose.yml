@@ -4,9 +4,9 @@ services:
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     environment:
-      - POSTGRES_USER=${POSTGRES_USER:-jibjob}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-jibjob}
-      - POSTGRES_DB=${POSTGRES_DB:-jibjob}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./db/migrations/001_init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
@@ -22,7 +22,7 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - VITE_API_URL=${VITE_API_URL:-http://backend:8080}
+      - VITE_API_URL=${VITE_API_URL}
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -34,8 +34,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - PORT=${PORT:-8080}
-      - DATABASE_URL=postgres://${POSTGRES_USER:-jibjob}:${POSTGRES_PASSWORD:-jibjob}@${POSTGRES_HOST:-postgres}:5432/${POSTGRES_DB:-jibjob}?sslmode=disable
+      - PORT=${PORT}
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB}?sslmode=disable
     depends_on:
       postgres:
         condition: service_healthy
