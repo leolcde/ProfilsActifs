@@ -17,6 +17,9 @@
           <RouterLink to="/inscription" class="text-primary hover:underline underline-offset-4">
             S'inscrire
           </RouterLink>
+          <RouterLink to="/connexion" class="btn-action text-xs px-4 py-2">
+            Connexion
+          </RouterLink>
           <RouterLink to="/profil/1" class="btn-secondary text-xs px-3 py-1 border border-border">
             Mon Profil (démo)
           </RouterLink>
