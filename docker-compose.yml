@@ -31,11 +31,17 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      - ./database/table/profil.sql:/docker-entrypoint-initdb.d/01_profil.sql:ro
+      - ./database/table/question.sql:/docker-entrypoint-initdb.d/02_question.sql:ro
+      - ./database/table/certif_result.sql:/docker-entrypoint-initdb.d/03_certif_result.sql:ro
+      - ./database/table/consent.sql:/docker-entrypoint-initdb.d/04_consent.sql:ro
+      - ./database/table/answser.sql:/docker-entrypoint-initdb.d/05_answser.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 30s
 
 volumes:
   postgres-data:
