@@ -67,7 +67,7 @@ const footerLinks = [
       </div>
     </section>
 
-    <section class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] snap-start flex flex-col items-center justify-center px-6 sm:px-12 text-center" style="background: linear-gradient(to bottom, white, #e8eef7, white);">
+    <section class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] snap-start flex flex-col items-center justify-center px-6 sm:px-12 text-center" style="background: radial-gradient(ellipse 120% 60% at center, #d0ddf0 0%, white 80%);">
       <div class="w-full max-w-5xl md:max-w-6xl xl:max-w-7xl 2xl:max-w-full 2xl:px-20">
         <h2
           class="text-3xl xl:text-4xl 2xl:text-5xl font-marianne font-bold text-primary mb-12 animate-fade-up"
