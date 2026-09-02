@@ -7,5 +7,6 @@ CREATE TABLE profiles (
     skills TEXT[],
     sector VARCHAR(100),
     location VARCHAR(255),
+    video_url VARCHAR(500),
     created_at TIMESTAMP DEFAULT NOW()
 );
