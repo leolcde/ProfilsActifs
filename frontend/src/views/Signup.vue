@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuth } from '../stores/auth'
 
 const router = useRouter()
+const { setUser } = useAuth()
 
 const formData = reactive({
   firstName: '',
@@ -59,7 +61,14 @@ async function submit() {
       return
     }
 
-    router.push({ name: 'home' })
+    // inscription réussie -> on connecte directement
+    setUser({
+      id: String(body.id ?? ''),
+      name: `${formData.firstName} ${formData.lastName}`.trim(),
+      email: body.mail ?? formData.email,
+      role: body.role ?? formData.role,
+    })
+    router.push({ name: 'dashboard' })
   } catch {
     error.value = 'Impossible de contacter le serveur.'
   } finally {
@@ -69,8 +78,8 @@ async function submit() {
 </script>
 
 <template>
-  <div class="flex-1 py-16 px-6 bg-surface">
-    <div class="max-w-xl mx-auto bg-white p-10 border border-border">
+  <div class="flex-1 py-10 sm:py-16 px-6 bg-surface">
+    <div class="max-w-xl mx-auto bg-white p-6 sm:p-10 border border-border">
       <h1 class="text-3xl font-marianne font-bold text-primary mb-2">Inscription</h1>
       <p class="text-text-muted font-spectral mb-10">
         Rejoignez ProfilsActifs pour accéder à la plateforme.
@@ -84,7 +93,7 @@ async function submit() {
       </p>
 
       <form class="space-y-6" @submit.prevent="submit">
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label :class="labelClass">Prénom</label>
             <input v-model="formData.firstName" type="text" :class="inputClass" required />
@@ -129,7 +138,7 @@ async function submit() {
           </select>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label :class="labelClass">Secteur</label>
             <input v-model="formData.sector" type="text" :class="inputClass" />

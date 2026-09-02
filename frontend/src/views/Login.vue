@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useAuth } from '../stores/auth'
 
 const router = useRouter()
 const route = useRoute()
+const { login } = useAuth()
 
 const formData = reactive({
   email: '',
@@ -22,30 +24,12 @@ async function submit() {
   error.value = ''
   loading.value = true
   try {
-    const res = await fetch('/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        mail: formData.email,
-        password: formData.password,
-      }),
-    })
-
-    const body = await res.json().catch(() => ({}))
-
-    if (!res.ok) {
-      error.value = body.error ?? `Erreur ${res.status}`
-      return
-    }
+    await login(formData.email, formData.password)
 
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : null
-    if (redirect) {
-      router.push(redirect)
-    } else {
-      router.push({ name: 'dashboard' })
-    }
-  } catch {
-    error.value = 'Impossible de contacter le serveur.'
+    router.push(redirect ?? { name: 'dashboard' })
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : 'Impossible de contacter le serveur.'
   } finally {
     loading.value = false
   }
@@ -53,8 +37,8 @@ async function submit() {
 </script>
 
 <template>
-  <div class="flex-1 py-16 px-6 bg-surface">
-    <div class="max-w-md mx-auto bg-white p-10 border border-border">
+  <div class="flex-1 py-10 sm:py-16 px-6 bg-surface">
+    <div class="max-w-md mx-auto bg-white p-6 sm:p-10 border border-border">
       <h1 class="text-3xl font-marianne font-bold text-primary mb-2">Connexion</h1>
       <p class="text-text-muted font-spectral mb-10">
         Accédez à votre espace personnel ProfilsActifs.

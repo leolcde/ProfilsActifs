@@ -14,9 +14,9 @@ const hasConsent = ref(profile.hasConsent)
 
 <template>
   <div class="max-w-4xl mx-auto px-6 py-12 w-full">
-    <RouterLink to="/catalogue" class="inline-flex items-center gap-2 text-sm text-primary font-marianne font-medium hover:underline mb-8">
+    <RouterLink to="/feed" class="inline-flex items-center gap-2 text-sm text-primary font-marianne font-medium hover:underline mb-8">
       <ArrowLeft class="w-4 h-4" />
-      Retour au catalogue
+      Retour au feed
     </RouterLink>
 
     <div class="bg-white border border-border">
@@ -44,7 +44,7 @@ const hasConsent = ref(profile.hasConsent)
       <div class="p-8 md:p-12">
         <div class="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
           <div>
-            <h1 class="text-4xl font-marianne font-black text-primary mb-2 tracking-tight">{{ profile.name }}</h1>
+            <h1 class="text-3xl sm:text-4xl font-marianne font-black text-primary mb-2 tracking-tight">{{ profile.name }}</h1>
             <p class="text-xl font-marianne text-text-main font-medium mb-6">{{ profile.job }}</p>
             <div class="flex items-center gap-2 text-text-muted font-marianne text-sm">
               <MapPin class="w-4 h-4" />

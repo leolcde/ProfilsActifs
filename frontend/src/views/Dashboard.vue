@@ -42,7 +42,7 @@ function save() {
 </script>
 
 <template>
-  <div class="flex-1 bg-surface py-16 px-6">
+  <div class="flex-1 bg-surface py-10 sm:py-16 px-6">
     <div class="max-w-5xl mx-auto space-y-10">
       <!-- En-tête -->
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -50,7 +50,7 @@ function save() {
           <p class="font-marianne font-bold text-action text-xs uppercase tracking-wide mb-2">
             Espace personnel
           </p>
-          <h1 class="text-4xl font-marianne font-black text-primary tracking-tight">
+          <h1 class="text-3xl sm:text-4xl font-marianne font-black text-primary tracking-tight">
             {{ form.name }}
           </h1>
           <p class="text-text-muted font-spectral mt-1">{{ form.job }} · {{ form.city }}</p>

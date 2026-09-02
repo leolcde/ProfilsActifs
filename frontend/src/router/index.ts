@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Catalogue from '../views/Catalogue.vue'
+import { useAuth } from '../stores/auth'
 import Dashboard from '../views/Dashboard.vue'
 import DefaultLayout from '../views/DefaultLayout.vue'
+import Feed from '../views/Feed.vue'
 import LandingPage from '../views/LandingPage.vue'
 import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
@@ -15,12 +16,19 @@ export const router = createRouter({
       component: DefaultLayout,
       children: [
         { path: '', name: 'home', component: LandingPage },
-        { path: 'catalogue', name: 'catalogue', component: Catalogue },
-        { path: 'dashboard', name: 'dashboard', component: Dashboard },
+        { path: 'feed', name: 'feed', component: Feed },
+        { path: 'dashboard', name: 'dashboard', component: Dashboard, meta: { requiresAuth: true } },
         { path: 'login', name: 'login', component: Login },
         { path: 'profil/:id', name: 'profile', component: Profile },
         { path: 'signup', name: 'signup', component: Signup },
       ],
     },
   ],
+})
+
+router.beforeEach((to) => {
+  const { isAuthenticated } = useAuth()
+  if (to.meta.requiresAuth && !isAuthenticated.value) {
+    return { name: 'login', query: { redirect: to.fullPath } }
+  }
 })
