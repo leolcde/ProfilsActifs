@@ -22,6 +22,14 @@ const title = computed(() => {
   return 'Connexion'
 })
 
+const bgImage = computed(() => {
+  if (route.query.type === 'candidat')
+    return 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&fit=crop&auto=format'
+  if (route.query.type === 'recruteur')
+    return 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1600&fit=crop&auto=format'
+  return null
+})
+
 const inputClass =
   'w-full border border-border p-3 rounded-none focus:outline-none focus:border-primary font-spectral'
 const labelClass = 'block font-marianne font-bold text-primary mb-2 text-sm'
@@ -43,8 +51,14 @@ async function submit() {
 </script>
 
 <template>
-  <div class="flex-1 py-10 sm:py-16 px-6 bg-surface">
-    <div class="max-w-md mx-auto bg-white p-6 sm:p-10 border border-border">
+  <div class="flex-1 relative py-10 sm:py-16 px-6 bg-surface overflow-hidden">
+    <div
+      v-if="bgImage"
+      class="absolute inset-0 z-0 pointer-events-none opacity-[0.18]"
+      :style="`background-image: url('${bgImage}'); background-size: cover; background-position: center;`"
+      aria-hidden="true"
+    />
+    <div class="relative z-10 max-w-md mx-auto bg-white p-6 sm:p-10 border border-border">
       <h1 class="text-3xl font-marianne font-bold text-primary mb-2">{{ title }}</h1>
       <p class="text-text-muted font-spectral mb-10">
         Accédez à votre espace personnel ProfilsActifs.
