@@ -10,11 +10,17 @@ const router = useRouter()
 const route = useRoute()
 const { isAuthenticated } = useAuth()
 
-/** Toute interaction exige d'être connecté. */
+const showAuthModal = ref(false)
+
 function requireAuth(): boolean {
   if (isAuthenticated.value) return true
-  router.push({ name: 'login', query: { redirect: route.fullPath } })
+  showAuthModal.value = true
   return false
+}
+
+function chooseType(type: 'candidat' | 'recruteur') {
+  showAuthModal.value = false
+  router.push({ name: 'login', query: { type, redirect: route.fullPath } })
 }
 
 // On étoffe le feed à partir des profils mock (pas de backend)
@@ -53,10 +59,6 @@ function toggleLike(uid: string) {
   if (liked.has(uid)) liked.delete(uid)
   else liked.add(uid)
   persist()
-}
-
-function likeCount(item: { uid: string; likes: number }) {
-  return item.likes + (liked.has(item.uid) ? 1 : 0)
 }
 
 // petit feedback visuel sur double-tap / clic image
@@ -177,5 +179,28 @@ const total = computed(() => feed.length)
         {{ i + 1 }} / {{ total }}
       </div>
     </section>
+  </div>
+
+  <!-- Modal choix connexion -->
+  <div
+    v-if="showAuthModal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+    @click.self="showAuthModal = false"
+  >
+    <div class="bg-white p-8 max-w-sm w-full mx-4 rounded-xl shadow-xl text-center">
+      <h2 class="text-xl font-marianne font-bold text-primary mb-2">Vous souhaitez interagir ?</h2>
+      <p class="font-spectral text-text-muted text-sm mb-8">Connectez-vous pour continuer. Qui êtes-vous ?</p>
+      <div class="flex flex-col gap-4">
+        <button class="btn-action w-full" @click="chooseType('candidat')">
+          Je suis candidat
+        </button>
+        <button class="btn-secondary w-full" @click="chooseType('recruteur')">
+          Je suis recruteur
+        </button>
+      </div>
+      <button class="mt-6 text-xs font-marianne text-text-muted hover:underline" @click="showAuthModal = false">
+        Annuler
+      </button>
+    </div>
   </div>
 </template>
