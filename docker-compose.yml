@@ -31,11 +31,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./database/table/profil.sql:/docker-entrypoint-initdb.d/01_profil.sql:ro
-      - ./database/table/question.sql:/docker-entrypoint-initdb.d/02_question.sql:ro
-      - ./database/table/certif_result.sql:/docker-entrypoint-initdb.d/03_certif_result.sql:ro
-      - ./database/table/consent.sql:/docker-entrypoint-initdb.d/04_consent.sql:ro
-      - ./database/table/answser.sql:/docker-entrypoint-initdb.d/05_answser.sql:ro
+      - ./database/migrations/000001_create_profiles_table.up.sql:/docker-entrypoint-initdb.d/01_profiles.sql:ro
+      - ./database/migrations/000002_create_questions_table.up.sql:/docker-entrypoint-initdb.d/02_questions.sql:ro
+      - ./database/migrations/000003_create_questionnaire_answers_table.up.sql:/docker-entrypoint-initdb.d/03_questions_answers.sql:ro
+      - ./database/migrations/000004_create_certification_results_table.up.sql:/docker-entrypoint-initdb.d/04_certification_results.sql:ro
+      - ./database/migrations/000005_create_consents_table.up.sql:/docker-entrypoint-initdb.d/05_consents.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
