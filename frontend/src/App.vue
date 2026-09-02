@@ -1,7 +1,10 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <HelloWorld />
+  <RouterView />
 </template>
+
+<style>
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+</style>
