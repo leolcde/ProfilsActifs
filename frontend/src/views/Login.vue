@@ -58,7 +58,7 @@ async function submit() {
       :style="`background-image: url('${bgImage}'); background-size: cover; background-position: center;`"
       aria-hidden="true"
     />
-    <div class="relative z-10 max-w-md mx-auto bg-white p-6 sm:p-10 border border-border">
+    <div class="relative z-10 max-w-md mx-auto bg-white p-6 sm:p-10 border border-border rounded-xl">
       <h1 class="text-3xl font-marianne font-bold text-primary mb-2">{{ title }}</h1>
       <p class="text-text-muted font-spectral mb-10">
         Accédez à votre espace personnel ProfilsActifs.
