@@ -139,7 +139,6 @@ const total = computed(() => feed.length)
               :class="liked.has(item.uid) ? 'fill-action text-action' : 'text-white'"
             />
           </span>
-          <span class="text-xs font-marianne font-bold mt-1">{{ likeCount(item) }}</span>
         </button>
 
         <button class="flex flex-col items-center group" @click="requireAuth()">
