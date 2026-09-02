@@ -1,7 +1,6 @@
 
 
 # Database
-# user: admin, pwd: mariamleokevser
 services:
 
   backend:
