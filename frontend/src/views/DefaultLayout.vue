@@ -8,6 +8,16 @@ const route = useRoute()
 const router = useRouter()
 const { user, isAuthenticated, logout } = useAuth()
 const open = ref(false)
+const loginDropdown = ref(false)
+
+function closeLoginDropdown() {
+  loginDropdown.value = false
+}
+
+watch(
+  () => route.fullPath,
+  () => { loginDropdown.value = false }
+)
 
 // referme le menu à chaque changement de page
 watch(
@@ -24,7 +34,6 @@ const links = computed(() => {
     base.push({ label: 'Mon espace', to: { name: 'dashboard' } })
   } else {
     base.push({ label: "S'inscrire", to: { name: 'signup' } })
-    base.push({ label: 'Connexion', to: { name: 'login' } })
   }
   return base
 })
@@ -55,6 +64,37 @@ function onLogout() {
           >
             {{ link.label }}
           </RouterLink>
+
+          <!-- Dropdown Connexion (non connecté) -->
+          <div v-if="!isAuthenticated" class="relative">
+            <button
+              class="btn-action text-xs px-4 py-2 inline-flex items-center gap-1.5"
+              @click="loginDropdown = !loginDropdown"
+            >
+              Connexion
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div
+              v-if="loginDropdown"
+              class="absolute right-0 top-full mt-2 w-48 bg-white border border-border shadow-md z-50"
+              @mouseleave="closeLoginDropdown"
+            >
+              <RouterLink
+                :to="{ name: 'login', query: { type: 'candidat' } }"
+                class="block px-4 py-3 font-marianne text-sm text-primary hover:bg-surface"
+              >
+                Candidat
+              </RouterLink>
+              <RouterLink
+                :to="{ name: 'login', query: { type: 'recruteur' } }"
+                class="block px-4 py-3 font-marianne text-sm text-primary hover:bg-surface border-t border-border"
+              >
+                Recruteur
+              </RouterLink>
+            </div>
+          </div>
 
           <template v-if="isAuthenticated">
             <span class="text-text-muted">·</span>
