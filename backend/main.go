@@ -1,28 +1,65 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
+
+	"jibjob/src/auth"
+	"jibjob/src/db"
+
+	"gorm.io/gorm"
 )
 
 func handler(res http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(res, "Hello, world!")
+	fmt.Fprint(res, "JibJob say Hello !")
 }
 
-func health(res http.ResponseWriter, req *http.Request) {
-	res.Header().Set("Content-Type", "application/json")
-	res.WriteHeader(http.StatusOK)
-	fmt.Fprintf(res, `{"status":"ok"}`)
+func health(gdb *gorm.DB) http.HandlerFunc {
+	return func(res http.ResponseWriter, req *http.Request) {
+		res.Header().Set("Content-Type", "application/json")
+
+		sqlDB, err := gdb.DB()
+		if err == nil {
+			err = sqlDB.Ping()
+		}
+		if err != nil {
+			res.WriteHeader(http.StatusServiceUnavailable)
+			json.NewEncoder(res).Encode(map[string]string{"status": "ko"})
+			return
+		}
+
+		res.WriteHeader(http.StatusOK)
+		json.NewEncoder(res).Encode(map[string]string{"status": "ok"})
+	}
 }
 
 func main() {
-	http.HandleFunc("/", handler)
-	http.HandleFunc("/health", health)
-
-	fmt.Println("serv up in http://localhost:8080")
-
-	err := http.ListenAndServe(":8080", nil)
+	gdb, err := db.Open()
 	if err != nil {
-		fmt.Println("Erreur:", err)
+		log.Fatal(err)
+	}
+
+	sqlDB, err := gdb.DB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := sqlDB.Ping(); err != nil {
+		log.Fatal("connexion db impossible: ", err)
+	}
+
+	http.HandleFunc("/", handler)
+	http.HandleFunc("/health", health(gdb))
+	http.HandleFunc("/auth/register", auth.Register(gdb))
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	fmt.Println("serv up in http://localhost:" + port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		log.Fatal(err)
 	}
 }
