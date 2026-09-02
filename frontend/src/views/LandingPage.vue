@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 
 const cards = ref<Element[]>([])
+const scrollContainer = ref<HTMLElement | null>(null)
 
 const testimonials = [
   { name: "Martin V.", job: "RH, Groupe Ionis", quote: "ProfilsActifs nous a permis de trouver des profils authentiques que les CV ne révèlent jamais." },
@@ -16,7 +17,7 @@ onMounted(() => {
         entry.target.classList.remove('opacity-0', 'translate-y-4')
       }
     })
-  }, { threshold: 0.2 })
+  }, { threshold: 0.1, root: scrollContainer.value })
 
   cards.value.forEach(card => observer.observe(card))
 })
@@ -55,12 +56,12 @@ const footerLinks = [
 
 
 <template>
-  <div class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] overflow-y-scroll snap-y snap-proximity">
+  <div ref="scrollContainer" class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] overflow-y-scroll snap-y snap-proximity">
 
     <section class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] snap-start relative flex flex-col items-center justify-center px-6 sm:px-12 text-center overflow-hidden">
       <div
-        class="absolute inset-0 z-0 pointer-events-none opacity-[0.10] grayscale"
-        style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2000'); background-size: cover; background-position: center;"
+        class="absolute inset-0 z-0 pointer-events-none opacity-[0.18]"
+        style="background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=2000&fit=crop&auto=format'); background-size: cover; background-position: center;"
         aria-hidden="true"
       />
       <div class="relative z-10 w-full max-w-4xl md:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto flex flex-col items-center">
