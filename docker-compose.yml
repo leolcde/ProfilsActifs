@@ -19,6 +19,19 @@ services:
         condition: service_healthy
 
 
+  frontend:
+    build: ./frontend
+    container_name: jibjob-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+
   postgres:
     image: postgres:16
     container_name: jibjob-db
