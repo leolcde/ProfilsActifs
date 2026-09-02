@@ -67,18 +67,8 @@ const footerLinks = [
       </div>
     </section>
 
-    <section class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] snap-start relative flex flex-col items-center justify-center px-6 sm:px-12 text-center overflow-hidden">
-      <!-- Image de fond -->
-      <div
-        class="absolute inset-0 z-0 pointer-events-none opacity-[0.15]"
-        style="background-image: url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=2000&fit=crop&auto=format'); background-size: cover; background-position: center;"
-        aria-hidden="true"
-      />
-      <!-- Fondu haut -->
-      <div class="absolute top-0 left-0 right-0 h-32 z-10 pointer-events-none" style="background: linear-gradient(to bottom, white, transparent);" aria-hidden="true" />
-      <!-- Fondu bas -->
-      <div class="absolute bottom-0 left-0 right-0 h-32 z-10 pointer-events-none" style="background: linear-gradient(to bottom, transparent, white);" aria-hidden="true" />
-      <div class="relative z-20 w-full max-w-5xl md:max-w-6xl xl:max-w-7xl 2xl:max-w-full 2xl:px-20">
+    <section class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] snap-start flex flex-col items-center justify-center px-6 sm:px-12 text-center" style="background: linear-gradient(to bottom, white, #e8eef7, white);">
+      <div class="w-full max-w-5xl md:max-w-6xl xl:max-w-7xl 2xl:max-w-full 2xl:px-20">
         <h2
           class="text-3xl xl:text-4xl 2xl:text-5xl font-marianne font-bold text-primary mb-12 animate-fade-up"
         >
@@ -98,8 +88,16 @@ const footerLinks = [
       </div>
     </section>
 
-    <section class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] snap-start flex flex-col">
-      <div class="flex-1 flex items-center justify-center px-6 sm:px-12 text-center w-full">
+    <section class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] snap-start relative flex flex-col overflow-hidden">
+      <!-- Image de fond -->
+      <div
+        class="absolute inset-0 z-0 pointer-events-none opacity-[0.15]"
+        style="background-image: url('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=2000&fit=crop&auto=format'); background-size: cover; background-position: center;"
+        aria-hidden="true"
+      />
+      <!-- Fondu haut -->
+      <div class="absolute top-0 left-0 right-0 h-32 z-10 pointer-events-none" style="background: linear-gradient(to bottom, white, transparent);" aria-hidden="true" />
+      <div class="flex-1 flex items-center justify-center px-6 sm:px-12 text-center w-full relative z-20">
         <div class="w-full max-w-5xl md:max-w-6xl xl:max-w-7xl 2xl:max-w-full 2xl:px-20 grid grid-cols-1 md:grid-cols-3 gap-8 xl:gap-12">
           <div
             class="p-6 sm:p-10 xl:p-14 bg-white/60 backdrop-blur-sm border border-border/50 rounded-lg animate-fade-up"
