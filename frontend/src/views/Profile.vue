@@ -36,14 +36,14 @@ function confirmRevoke() {
           class="w-full h-full object-cover grayscale opacity-90"
         />
         <div v-else class="flex flex-col items-center justify-center text-text-muted p-6 text-center">
-          <AlertTriangle class="w-12 h-12 mb-4" />
+          <AlertTriangle class="w-12 h-12 mb-4" aria-hidden="true" />
           <p class="font-marianne font-bold text-lg mb-2">Vidéo non disponible</p>
           <p class="font-spectral">Le consentement de publication a été révoqué.</p>
         </div>
 
         <div v-if="hasConsent" class="absolute inset-0 flex items-center justify-center">
-          <button class="w-20 h-20 bg-action text-action-foreground rounded-full flex items-center justify-center pl-1.5 hover:scale-105 transition-transform shadow-lg">
-            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z" /></svg>
+          <button class="w-20 h-20 bg-action text-action-foreground rounded-full flex items-center justify-center pl-1.5 hover:scale-105 transition-transform shadow-lg focus-visible:ring-2 focus-visible:ring-white" :aria-label="`Lire la vidéo de présentation de ${profile.name}`">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 6-12 6z" /></svg>
           </button>
         </div>
       </div>
@@ -60,8 +60,8 @@ function confirmRevoke() {
           </div>
 
           <div class="flex flex-col gap-4 min-w-[200px] shrink-0">
-            <button class="btn-action w-full flex items-center justify-center gap-2">
-              <MessageSquare class="w-4 h-4" />
+            <button class="btn-action w-full flex items-center justify-center gap-2" :aria-label="`Contacter ${profile.name}`">
+              <MessageSquare class="w-4 h-4" aria-hidden="true" />
               Contacter
             </button>
 
@@ -113,7 +113,7 @@ function confirmRevoke() {
 
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pt-6 border-t border-border gap-4">
           <div v-if="hasConsent" class="flex items-center gap-2 text-success font-marianne font-bold text-sm">
-            <CheckCircle2 class="w-5 h-5" />
+            <CheckCircle2 class="w-5 h-5" aria-hidden="true" />
             Consentement donné le {{ profile.consentDate ?? 'récemment' }}
           </div>
           <div v-else class="text-text-muted font-marianne text-sm italic">
@@ -138,8 +138,8 @@ function confirmRevoke() {
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
     @click.self="showRevokeModal = false"
   >
-    <div class="bg-white p-8 max-w-md w-full mx-4 rounded-xl shadow-xl text-center">
-      <h2 class="text-xl font-marianne font-bold text-primary mb-3">Révoquer mon consentement</h2>
+    <div class="bg-white p-8 max-w-md w-full mx-4 rounded-xl shadow-xl text-center" role="dialog" aria-modal="true" aria-labelledby="revoke-modal-title">
+      <h2 id="revoke-modal-title" class="text-xl font-marianne font-bold text-primary mb-3">Révoquer mon consentement</h2>
       <p class="font-spectral text-text-main text-sm leading-relaxed mb-2">
         Cette action entraînera la <strong>suppression définitive</strong> de votre vidéo de présentation de la plateforme.
       </p>
