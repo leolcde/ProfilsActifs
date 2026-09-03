@@ -1,0 +1,63 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+
+env:
+  POSTGRES_USER: ${POSTGRES_USER}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  POSTGRES_DB: ${POSTGRES_DB}
+  DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}?sslmode=disable
+  JWT_SECRET: ${JWT_SECRET}
+  PORT: "8080"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: ${POSTGRES_USER}
+          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+          POSTGRES_DB: ${POSTGRES_DB}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Run migrations
+        run: |
+          go run ./cmd/migrate up
+
+      - name: Seed demo accounts
+        run: |
+          go run ./cmd/seed
+
+      - name: Run tests
+        run: go test ./...
+
+      - name: Build binary
+        run: go build -o dist/jibjob-server .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jibjob-server
+          path: dist/jibjob-server
+          retention-days: 7
