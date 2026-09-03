@@ -2,7 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
+  merge:
+    branches: [_access_test]
 
 env:
   POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
