@@ -2,10 +2,7 @@ import { computed, reactive } from 'vue'
 
 /**
  * Store d'authentification (composable maison, sans Pinia).
- *
- * Aujourd'hui : l'état est simplement persisté dans le localStorage.
- * Demain : `login` / `logout` / `register` appellent déjà les bonnes routes
- * du backend Go — il suffira que celui-ci réponde.
+ * L'état (utilisateur + token JWT) est persisté dans le localStorage.
  */
 
 const LS_KEY = 'auth_user'
@@ -15,6 +12,7 @@ export interface AuthUser {
   name: string
   email: string
   role: string
+  token: string
 }
 
 function load(): AuthUser | null {
@@ -44,7 +42,7 @@ function setUser(user: AuthUser) {
   persist()
 }
 
-/** POST /auth/login — à activer quand le backend le gère. */
+/** POST /auth/login -> { token, id, name, mail, role } */
 async function login(mail: string, password: string) {
   const res = await fetch('/auth/login', {
     method: 'POST',
@@ -60,6 +58,7 @@ async function login(mail: string, password: string) {
     name: body.name ?? '',
     email: body.mail ?? mail,
     role: body.role ?? 'candidate',
+    token: body.token ?? '',
   })
 }
 
@@ -69,12 +68,19 @@ function logout() {
   // futur : fetch('/auth/logout', { method: 'POST' })
 }
 
+/** En-tête Authorization à passer aux futurs appels protégés. */
+function authHeader(): Record<string, string> {
+  return state.user?.token ? { Authorization: `Bearer ${state.user.token}` } : {}
+}
+
 export function useAuth() {
   return {
     user: computed(() => state.user),
+    token: computed(() => state.user?.token ?? ''),
     isAuthenticated: computed(() => state.user !== null),
     login,
     logout,
     setUser,
+    authHeader,
   }
 }

@@ -7,18 +7,18 @@ import (
 	"strings"
 	"time"
 
-	"jibjob/src/models"
+	utils "jibjob/src/utils"
 
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
-type Role = models.Role
+type Role = utils.Role
 
 const (
-	Candidate = models.Candidate
-	Recruiter = models.Recruiter
-	Admin     = models.Admin
+	Candidate = utils.Candidate
+	Recruiter = utils.Recruiter
+	Admin     = utils.Admin
 )
 
 type RegisterRequest struct {
@@ -67,6 +67,7 @@ func RegisterErrorHandling(res http.ResponseWriter, req *http.Request) (Register
 		http.Error(res, `{"error":"invalid mail"}`, http.StatusUnprocessableEntity)
 		return r, time.Time{}, false
 	}
+	// check si le role est bien, candidate ou recruite ou admin
 	if !checkRole(r.Role) {
 		http.Error(res, `{"error":"invalid role"}`, http.StatusUnprocessableEntity)
 		return r, time.Time{}, false
@@ -87,7 +88,7 @@ func Register(gdb *gorm.DB) http.HandlerFunc {
 			return
 		}
 
-		p := models.Profile{
+		profil := utils.Profile{
 			Name:         r.Name,
 			Email:        r.Mail,
 			PasswordHash: string(hash),
@@ -98,7 +99,7 @@ func Register(gdb *gorm.DB) http.HandlerFunc {
 			Role:         r.Role,
 		}
 
-		if err := gdb.Create(&p).Error; err != nil {
+		if err := gdb.Create(&profil).Error; err != nil {
 			if errors.Is(err, gorm.ErrDuplicatedKey) {
 				http.Error(res, `{"error":"mail already used"}`, http.StatusUnprocessableEntity)
 				return
@@ -110,9 +111,9 @@ func Register(gdb *gorm.DB) http.HandlerFunc {
 		res.Header().Set("Content-Type", "application/json")
 		res.WriteHeader(http.StatusCreated)
 		json.NewEncoder(res).Encode(map[string]any{
-			"id":   p.ID,
-			"mail": p.Email,
-			"role": p.Role,
+			"id":   profil.ID,
+			"mail": profil.Email,
+			"role": profil.Role,
 		})
 	}
 }
