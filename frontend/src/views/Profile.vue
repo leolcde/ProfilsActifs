@@ -10,6 +10,13 @@ const id = String(route.params.id)
 const profile = MOCK_PROFILES.find(p => p.id === id) ?? MOCK_PROFILES[0]
 const isMyProfile = id === '1'
 const hasConsent = ref(profile.hasConsent)
+const showRevokeModal = ref(false)
+
+function confirmRevoke() {
+  hasConsent.value = false
+  showRevokeModal.value = false
+  // TODO : appeler DELETE /profil/:id/video quand le backend est prêt
+}
 </script>
 
 <template>
@@ -116,11 +123,36 @@ const hasConsent = ref(profile.hasConsent)
           <button
             :disabled="!hasConsent"
             class="btn-secondary text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            @click="hasConsent = false"
+            @click="showRevokeModal = true"
           >
             Révoquer mon consentement
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modale de confirmation révocation -->
+  <div
+    v-if="showRevokeModal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+    @click.self="showRevokeModal = false"
+  >
+    <div class="bg-white p-8 max-w-md w-full mx-4 rounded-xl shadow-xl text-center">
+      <h2 class="text-xl font-marianne font-bold text-primary mb-3">Révoquer mon consentement</h2>
+      <p class="font-spectral text-text-main text-sm leading-relaxed mb-2">
+        Cette action entraînera la <strong>suppression définitive</strong> de votre vidéo de présentation de la plateforme.
+      </p>
+      <p class="font-spectral text-text-muted text-sm leading-relaxed mb-8">
+        Votre profil restera accessible mais aucune vidéo ne sera visible. Cette opération est irréversible.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <button class="btn-action flex-1" @click="confirmRevoke">
+          Confirmer la suppression
+        </button>
+        <button class="btn-secondary flex-1" @click="showRevokeModal = false">
+          Annuler
+        </button>
       </div>
     </div>
   </div>
