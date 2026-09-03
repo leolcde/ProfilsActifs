@@ -1,7 +1,7 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
+import Questionnaire from './components/Questionnaire.vue'
 </script>
 
 <template>
-  <HelloWorld />
+  <Questionnaire />
 </template>
