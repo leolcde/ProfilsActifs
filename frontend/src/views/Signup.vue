@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { useAuth } from '../stores/auth'
 
 const router = useRouter()
-const { setUser } = useAuth()
+const { login } = useAuth()
 
 const formData = reactive({
   firstName: '',
@@ -61,13 +61,8 @@ async function submit() {
       return
     }
 
-    // inscription réussie -> on connecte directement
-    setUser({
-      id: String(body.id ?? ''),
-      name: `${formData.firstName} ${formData.lastName}`.trim(),
-      email: body.mail ?? formData.email,
-      role: body.role ?? formData.role,
-    })
+    // inscription réussie -> on enchaîne sur un login pour récupérer le token
+    await login(formData.email, formData.password)
     router.push({ name: 'dashboard' })
   } catch {
     error.value = 'Impossible de contacter le serveur.'

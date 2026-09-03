@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"jibjob/src/auth"
-	"jibjob/src/db"
+	utils "jibjob/src/utils"
 
 	"gorm.io/gorm"
 )
@@ -37,7 +37,7 @@ func health(gdb *gorm.DB) http.HandlerFunc {
 }
 
 func main() {
-	gdb, err := db.Open()
+	gdb, err := utils.Open()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -53,6 +53,7 @@ func main() {
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/health", health(gdb))
 	http.HandleFunc("/auth/register", auth.Register(gdb))
+	http.HandleFunc("/auth/login", auth.Login(gdb))
 
 	port := os.Getenv("PORT")
 	if port == "" {

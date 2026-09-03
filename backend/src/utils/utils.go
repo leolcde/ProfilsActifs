@@ -1,10 +1,13 @@
-package models
+package utils
 
 import (
 	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/lib/pq"
 )
+
+// REGISTER
 
 type Role string
 
@@ -25,4 +28,22 @@ type Profile struct {
 	Location     string         `json:"location"`
 	Role         Role           `json:"role" gorm:"type:user_role;default:candidate"`
 	CreatedAt    time.Time      `json:"created_at"`
+}
+
+// LOGIN
+
+type LoginRequest struct {
+	Mail     string `json:"mail"`
+	Password string `json:"password"`
+}
+
+type LoginResponse struct {
+	Token string `json:"token"`
+	Role  string `json:"role"`
+}
+
+type Claims struct {
+	UserID string `json:"user_id"`
+	Role   string `json:"role"`
+	jwt.RegisteredClaims
 }
