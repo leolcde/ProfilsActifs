@@ -1,25 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-
-const cards = ref<Element[]>([])
-
 const testimonials = [
   { name: "Martin V.", job: "RH, Groupe Ionis", quote: "ProfilsActifs nous a permis de trouver des profils authentiques que les CV ne révèlent jamais." },
   { name: "Noah G.", job: "Recruteur, Pôle Emploi Strasbourg", quote: "La certification JEB est un vrai plus pour identifier rapidement les candidats sérieux." },
   { name: "Diana K.", job: "Directrice, Atyos", quote: "Un outil simple, efficace et conforme aux exigences du service public." },
 ]
-
-onMounted(() => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.remove('opacity-0', 'translate-y-4')
-      }
-    })
-  }, { threshold: 0.2 })
-
-  cards.value.forEach(card => observer.observe(card))
-})
 
 const year = new Date().getFullYear()
 
@@ -59,10 +43,12 @@ const footerLinks = [
 
     <section class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] snap-start relative flex flex-col items-center justify-center px-6 sm:px-12 text-center overflow-hidden">
       <div
-        class="absolute inset-0 z-0 pointer-events-none opacity-[0.10] grayscale"
-        style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2000'); background-size: cover; background-position: center;"
+        class="absolute inset-0 z-0 pointer-events-none opacity-[0.18]"
+        style="background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=2000&fit=crop&auto=format'); background-size: cover; background-position: center;"
         aria-hidden="true"
       />
+      <!-- Fondu bas vers la section suivante -->
+      <div class="absolute bottom-0 left-0 right-0 h-32 z-10 pointer-events-none" style="background: linear-gradient(to bottom, transparent, white);" aria-hidden="true" />
       <div class="relative z-10 w-full max-w-4xl md:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto flex flex-col items-center">
         <h1 class="text-4xl sm:text-5xl md:text-6xl xl:text-7xl 2xl:text-8xl font-black text-primary font-marianne tracking-tight mb-8 leading-tight drop-shadow-sm">
           La mise en relation <br /> simple et transparente.
@@ -81,11 +67,10 @@ const footerLinks = [
       </div>
     </section>
 
-    <section class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] snap-start flex flex-col items-center justify-center px-6 sm:px-12 text-center">
+    <section class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] snap-start flex flex-col items-center justify-center px-6 sm:px-12 text-center" style="background: radial-gradient(ellipse 120% 60% at center, #d0ddf0 0%, white 80%);">
       <div class="w-full max-w-5xl md:max-w-6xl xl:max-w-7xl 2xl:max-w-full 2xl:px-20">
         <h2
-          :ref="el => { if (el) cards.push(el as Element) }"
-          class="text-3xl xl:text-4xl 2xl:text-5xl font-marianne font-bold text-primary mb-12 opacity-0 translate-y-4 transition-all duration-700"
+          class="text-3xl xl:text-4xl 2xl:text-5xl font-marianne font-bold text-primary mb-12 animate-fade-up"
         >
           Ils nous font confiance
         </h2>
@@ -93,8 +78,7 @@ const footerLinks = [
           <div
             v-for="t in testimonials"
             :key="t.name"
-            :ref="el => { if (el) cards.push(el as Element) }"
-            class="p-6 sm:p-10 xl:p-14 bg-white border border-border rounded-lg text-left opacity-0 translate-y-4 transition-all duration-700"
+            class="p-6 sm:p-10 xl:p-14 bg-white border border-border rounded-lg text-left animate-fade-up"
           >
             <p class="font-spectral text-text-main italic mb-6 text-lg xl:text-xl 2xl:text-2xl leading-relaxed">"{{ t.quote }}"</p>
             <p class="font-marianne font-bold text-primary xl:text-lg">{{ t.name }}</p>
@@ -104,26 +88,31 @@ const footerLinks = [
       </div>
     </section>
 
-    <section class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] snap-start flex flex-col">
-      <div class="flex-1 flex items-center justify-center px-6 sm:px-12 text-center w-full">
+    <section class="h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] snap-start relative flex flex-col overflow-hidden">
+      <!-- Image de fond -->
+      <div
+        class="absolute inset-0 z-0 pointer-events-none opacity-[0.15]"
+        style="background-image: url('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=2000&fit=crop&auto=format'); background-size: cover; background-position: center;"
+        aria-hidden="true"
+      />
+      <!-- Fondu haut -->
+      <div class="absolute top-0 left-0 right-0 h-32 z-10 pointer-events-none" style="background: linear-gradient(to bottom, white, transparent);" aria-hidden="true" />
+      <div class="flex-1 flex items-center justify-center px-6 sm:px-12 text-center w-full relative z-20">
         <div class="w-full max-w-5xl md:max-w-6xl xl:max-w-7xl 2xl:max-w-full 2xl:px-20 grid grid-cols-1 md:grid-cols-3 gap-8 xl:gap-12">
           <div
-            :ref="el => { if (el) cards.push(el as Element) }"
-            class="p-6 sm:p-10 xl:p-14 bg-white/60 backdrop-blur-sm border border-border/50 rounded-lg opacity-0 translate-y-4 transition-all duration-700"
+            class="p-6 sm:p-10 xl:p-14 bg-white/60 backdrop-blur-sm border border-border/50 rounded-lg animate-fade-up"
           >
             <h3 class="text-2xl xl:text-3xl font-marianne font-bold text-primary mb-4">Vidéo courte</h3>
             <p class="text-text-muted font-spectral text-lg xl:text-xl leading-relaxed">Une présentation d'une minute pour exprimer votre motivation au-delà du CV.</p>
           </div>
           <div
-            :ref="el => { if (el) cards.push(el as Element) }"
-            class="p-6 sm:p-10 xl:p-14 bg-white/60 backdrop-blur-sm border border-border/50 rounded-lg opacity-0 translate-y-4 transition-all duration-700"
+            class="p-6 sm:p-10 xl:p-14 bg-white/60 backdrop-blur-sm border border-border/50 rounded-lg animate-fade-up"
           >
             <h3 class="text-2xl xl:text-3xl font-marianne font-bold text-primary mb-4">Certification JEB</h3>
             <p class="text-text-muted font-spectral text-lg xl:text-xl leading-relaxed">Un test de savoir-être professionnel pour valoriser vos compétences douces.</p>
           </div>
           <div
-            :ref="el => { if (el) cards.push(el as Element) }"
-            class="p-6 sm:p-10 xl:p-14 bg-white/60 backdrop-blur-sm border border-border/50 rounded-lg opacity-0 translate-y-4 transition-all duration-700"
+            class="p-6 sm:p-10 xl:p-14 bg-white/60 backdrop-blur-sm border border-border/50 rounded-lg animate-fade-up"
           >
             <h3 class="text-2xl xl:text-3xl font-marianne font-bold text-primary mb-4">Contact direct</h3>
             <p class="text-text-muted font-spectral text-lg xl:text-xl leading-relaxed">Les recruteurs parcourent les profils mis en avant et initient l'échange.</p>
