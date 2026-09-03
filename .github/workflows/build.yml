@@ -10,6 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: backend
+
     env:
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
@@ -45,11 +49,11 @@ jobs:
 
       - name: Run migrations
         run: |
-          go run ./cmd/migrate up
+          go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+          migrate -database "$DATABASE_URL" -path ../database/migrations up
 
-      - name: Seed demo accounts
-        run: |
-          go run ./cmd/seed
+      - name: Vet
+        run: go vet ./...
 
       - name: Run tests
         run: go test ./...
@@ -61,5 +65,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jibjob-server
-          path: dist/jibjob-server
+          path: backend/dist/jibjob-server
           retention-days: 7
