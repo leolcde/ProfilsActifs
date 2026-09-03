@@ -26,11 +26,25 @@ const inputClass =
   'w-full border border-border p-3 rounded-none focus:outline-none focus:border-primary font-spectral'
 const labelClass = 'block font-marianne font-bold text-primary mb-2 text-sm'
 
+function getAge(birthDate: string): number {
+  const today = new Date()
+  const birth = new Date(birthDate)
+  let age = today.getFullYear() - birth.getFullYear()
+  const m = today.getMonth() - birth.getMonth()
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--
+  return age
+}
+
 async function submit() {
   error.value = ''
 
   if (!formData.consent) {
     error.value = 'Vous devez accepter les conditions.'
+    return
+  }
+
+  if (!formData.birthDate || getAge(formData.birthDate) < 16) {
+    error.value = 'Vous devez avoir au moins 16 ans pour vous inscrire.'
     return
   }
 
@@ -126,7 +140,7 @@ async function submit() {
           <label :class="labelClass">Date de naissance *</label>
           <input v-model="formData.birthDate" type="date" :class="inputClass" required />
           <p class="text-xs text-text-muted mt-1 font-spectral">
-            Obligatoire pour valider l'inscription.
+            Obligatoire. Vous devez avoir au moins 16 ans pour vous inscrire.
           </p>
         </div>
 
