@@ -184,7 +184,10 @@ async function submit() {
             />
             <span class="text-sm font-spectral text-text-main leading-snug">
               Je consens au traitement de mes données à caractère personnel dans le cadre du service
-              ProfilsActifs et j'accepte les Conditions Générales d'Utilisation.
+              ProfilsActifs et j'accepte les
+              <RouterLink :to="{ name: 'cgu' }" target="_blank" class="text-primary font-marianne font-bold hover:underline">
+                Conditions Générales d'Utilisation
+              </RouterLink>.
             </span>
           </label>
         </div>
