@@ -2,8 +2,8 @@ name: Build
 
 on:
   push:
-    branches: [dev]
-  merge:
+    branches: [dev, _access_test]
+  pull_request:
     branches: [_access_test]
 
 env:
